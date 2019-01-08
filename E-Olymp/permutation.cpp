@@ -14,37 +14,39 @@ const int INF = 1e9;
 const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
+const int LEVEL = 18;
 
-int table[N][18];
 int arr[N];
+int table[N + 1][LEVEL + 1];
 
 void build() {
+	table[0][0] = INF;	
 	for (int i = 0; i < N; i++)
-		table[i][0] = arr[i]; 
-	for (int j = 1; (1 << j) <= N; j++) {
+		table[arr[i]][0] = i + 1;
+
+	for (int j = 1; j < LEVEL; j++) {
 		for (int i = 0; i + (1 << j) <= N; i++) {
 			table[i][j] = min(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
 		}
 	}
 }
 
-void query(int l, int r)	 {
-	int ret = INF;
-	for (int j = N; j >= 0; j--) {
-		if (l + (1 << j) - 1 <= R) {
-			ans = min(ans, table[l][j]);
-			l += (1 << j);
-		}
-	}
-}
-
-void querymin(int l, int r) {
+int queryMin(int l, int r) {
 	int j = log2(r - l + 1);
 	return min(table[l][j], table[r - (1 << j) + 1][j]);
 }
 
 int main() {
-
+	int n, q;
+	scanf("%d %d", &n, &q);
+	for (int i = 0; i < n; i++)
+		scanf("%d", arr + i);
+	build();
+	while (q--) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		printf("%d\n", queryMin(a, b));
+	}
 	return 0;
 }
 		

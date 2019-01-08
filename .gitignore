@@ -6,3 +6,5 @@ StrukDatE
 TEST
 *.out
 *.in
+*.exe
+*valid*
