@@ -9,44 +9,37 @@ typedef pair<int, pair<int, int> > piii;
 #define PI acos(-1)
 #define all(c) c.begin(), c.end()
 #define SET(x, y) memset((x), y, sizeof(x))
-const int MOD = 100;
+const int MOD = 1e9 + 7;
 const int INF = 1e9;
 const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-int cek(LL num) {
-	LL ret = 1LL;
-	for (int i = 2; i <= num; i++) {
-		bool b = false;
-		for (int j = 2; j < i; j++ ) {
-			if (i % j == 0) {
-				b = 1;
-				break;
-			}
-		}
-		if (!b) {
-			int temp = 1;
-			while (num % i == 0) {
-				num /= i;
-				temp++;
-			}
-			ret *= temp;
-		}
+unordered_map<LL, LL> mp;
+
+void preprocess() {
+	mp[4] = 4;
+	for (LL i = 8; i < (1LL << 58); i *= 2) {
+		mp[i] = mp[i / 2]  * 2 + i;
+		// cout << i << " : " << mp[i] << endl;
 	}
-	return ret & 1;
 }
 
 int main() {
-	LL n;
-	scanf("%lld", &n);
-	int ans = 0;
-	for (LL i = 1; i<= n; i++) {
-		if (cek(i)) {
-			ans += i % MOD; ans %= MOD;
+	preprocess();
+	LL t;
+	scanf("%lld", &t);
+	while (t--) {
+		LL ans = 0LL;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				LL a;
+				scanf("%lld", &a);
+				ans = ans + mp[a];
+			}
 		}
+		printf("%lld\n", ans);
 	}
-	printf("%d\n", ans);
 	return 0;
 }
 		

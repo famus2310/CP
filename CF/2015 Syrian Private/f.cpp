@@ -15,36 +15,30 @@ const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-LL bigmod(const string& s, LL m) {
-	LL ret = 0LL;
-	for (char c : s) {
-		ret = (ret * 10 + c - '0') % m;
-	}
-	return ret;
-}
+int arr[17];
 
-LL powmod(LL a, LL b) {
-	LL ret = 1LL;
-	while (b) {
-		if (b & 1) ret = (ret * a) % MOD;
-		b = b / 2;
-		a = (a * a) % MOD;
-	}
-	return ret;
-}
- 
 int main() {
-	fastio;
-	string k, n;
 	int t;
-	cin >> t;
+	scanf("%d", &t);
 	while (t--) {
-		cin >> n >> k;
-		int odd = (n.back() - '0') & 1 ? -1 : 1;
-		LL y = bigmod(n, MOD - 1);
-		LL x = bigmod(k, MOD);
-		x = (x - 1 + MOD) % MOD;
-		cout << (powmod(x, y) + odd * x + MOD) % MOD << endl;
+		int n;
+		scanf("%d", &n);
+		for (int i = 0; i < n; i++)
+			scanf("%d", arr + i);
+		sort(arr, arr + n);
+		int now = 0;
+		int cnt = 0;
+		int cur = 0;
+		for (int i = 0; i < n; i++) {
+			if (cur + arr[i] <= 300) {
+				cur += arr[i];
+				now += cur;
+			}
+			else
+				break;
+			cnt++;
+		}
+		printf("%d %d\n", cnt, now);
 	}
 	return 0;
 }

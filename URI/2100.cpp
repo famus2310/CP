@@ -9,18 +9,20 @@ typedef pair<int, pair<int, int> > piii;
 #define PI acos(-1)
 #define all(c) c.begin(), c.end()
 #define SET(x, y) memset((x), y, sizeof(x))
-const int MOD = 1e9 + 7;
+const int MOD = 1300031;
 const int INF = 1e9;
 const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-LL bigmod(const string& s, LL m) {
-	LL ret = 0LL;
-	for (char c : s) {
-		ret = (ret * 10 + c - '0') % m;
+LL fact[4005];
+LL power[4005];
+void precomp() {
+	fact[0] = power[0] = 1LL;
+	for (LL i = 1; i < 4005; i++) {
+		fact[i] = (fact[i - 1] * i) % MOD;
+		power[i] = (power[i - 1] * 2LL) % MOD;
 	}
-	return ret;
 }
 
 LL powmod(LL a, LL b) {
@@ -32,19 +34,21 @@ LL powmod(LL a, LL b) {
 	}
 	return ret;
 }
- 
+
+LL inverse(LL a) {
+	return powmod(a, MOD - 2);
+}
+
 int main() {
-	fastio;
-	string k, n;
-	int t;
-	cin >> t;
+	precomp();
+	LL t;
+	scanf("%lld", &t);
 	while (t--) {
-		cin >> n >> k;
-		int odd = (n.back() - '0') & 1 ? -1 : 1;
-		LL y = bigmod(n, MOD - 1);
-		LL x = bigmod(k, MOD);
-		x = (x - 1 + MOD) % MOD;
-		cout << (powmod(x, y) + odd * x + MOD) % MOD << endl;
+		LL n, m;
+		scanf("%lld %lld", &n, &m);
+		LL ans = (fact[n - m] * power[m]) % MOD;
+		ans = (ans * inverse(fact[n - 2 * m])) % MOD;
+		printf("%lld\n", ans);
 	}
 	return 0;
 }

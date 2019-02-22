@@ -9,44 +9,33 @@ typedef pair<int, pair<int, int> > piii;
 #define PI acos(-1)
 #define all(c) c.begin(), c.end()
 #define SET(x, y) memset((x), y, sizeof(x))
-const int MOD = 100;
+const int MOD = 1e9 + 7;
 const int INF = 1e9;
 const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-int cek(LL num) {
-	LL ret = 1LL;
-	for (int i = 2; i <= num; i++) {
-		bool b = false;
-		for (int j = 2; j < i; j++ ) {
-			if (i % j == 0) {
-				b = 1;
-				break;
-			}
-		}
-		if (!b) {
-			int temp = 1;
-			while (num % i == 0) {
-				num /= i;
-				temp++;
-			}
-			ret *= temp;
-		}
-	}
-	return ret & 1;
-}
+LL cnt[N];
 
 int main() {
+	SET(cnt, 0);
 	LL n;
 	scanf("%lld", &n);
-	int ans = 0;
-	for (LL i = 1; i<= n; i++) {
-		if (cek(i)) {
-			ans += i % MOD; ans %= MOD;
+	for (int i = 0; i < n; i++) {
+		LL a;
+		scanf("%lld", &a);
+		cnt[a]++;
+	}
+	LL k;
+	scanf("%lld", &k);
+	LL ans = 0LL;
+	for (LL i = 0; i < N; i++) {
+		if (cnt[i] == k) {
+			ans = i;
+			break;
 		}
 	}
-	printf("%d\n", ans);
+	printf("%lld\n", ans);
 	return 0;
 }
 		

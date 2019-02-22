@@ -15,36 +15,24 @@ const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-LL bigmod(const string& s, LL m) {
-	LL ret = 0LL;
-	for (char c : s) {
-		ret = (ret * 10 + c - '0') % m;
-	}
-	return ret;
-}
-
-LL powmod(LL a, LL b) {
-	LL ret = 1LL;
-	while (b) {
-		if (b & 1) ret = (ret * a) % MOD;
-		b = b / 2;
-		a = (a * a) % MOD;
-	}
-	return ret;
-}
- 
 int main() {
-	fastio;
-	string k, n;
-	int t;
+	LL t;
 	cin >> t;
 	while (t--) {
-		cin >> n >> k;
-		int odd = (n.back() - '0') & 1 ? -1 : 1;
-		LL y = bigmod(n, MOD - 1);
-		LL x = bigmod(k, MOD);
-		x = (x - 1 + MOD) % MOD;
-		cout << (powmod(x, y) + odd * x + MOD) % MOD << endl;
+		LL n;
+		cin >> n;
+		LL ret = (4 + (6 * (n - 1)) % MOD + (2 * ((n - 2) * (n - 1)) %  MOD) % MOD) % MOD;
+		LL a = n - 3;
+		LL b = n - 1;
+		LL c = n - 2;
+		if (a % 3 == 0) a /= 3;
+		else if (b % 3 == 0) b /= 3;
+		else if (c % 3 == 0) c /= 3;
+		if (a % 2 == 0) a /= 2;
+		else if (b % 2 == 0) b /= 2;
+		else c /= 2;
+		ret = (ret + (((a * b) % MOD) * c) % MOD) % MOD;
+		cout << ret << endl;
 	}
 	return 0;
 }

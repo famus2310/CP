@@ -15,36 +15,28 @@ const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-LL bigmod(const string& s, LL m) {
-	LL ret = 0LL;
-	for (char c : s) {
-		ret = (ret * 10 + c - '0') % m;
+void solve(LL x) {
+	for (LL i = 1; i * (i + 1) / 2 < 2 * x; i++) {
+		double a = (double)(x - i * (i + 1) / 2) / (double)(i + 1);
+		if (a == 0) continue;
+		if (a - (LL)a == 0) {
+			printf("%lld = %lld", x, (LL)a);
+			for (LL j = 1; j <= i; j++)
+				printf(" + %lld", (LL)a + j);
+			puts("");
+			return;
+		}
 	}
-	return ret;
+	puts("IMPOSSIBLE");
 }
 
-LL powmod(LL a, LL b) {
-	LL ret = 1LL;
-	while (b) {
-		if (b & 1) ret = (ret * a) % MOD;
-		b = b / 2;
-		a = (a * a) % MOD;
-	}
-	return ret;
-}
- 
 int main() {
-	fastio;
-	string k, n;
 	int t;
-	cin >> t;
+	scanf("%d", &t);
 	while (t--) {
-		cin >> n >> k;
-		int odd = (n.back() - '0') & 1 ? -1 : 1;
-		LL y = bigmod(n, MOD - 1);
-		LL x = bigmod(k, MOD);
-		x = (x - 1 + MOD) % MOD;
-		cout << (powmod(x, y) + odd * x + MOD) % MOD << endl;
+		LL x;
+		scanf("%lld", &x);
+		solve(x);
 	}
 	return 0;
 }

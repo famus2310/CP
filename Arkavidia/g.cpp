@@ -15,10 +15,13 @@ const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-LL bigmod(const string& s, LL m) {
+LL mulmod(LL a, LL b) {
 	LL ret = 0LL;
-	for (char c : s) {
-		ret = (ret * 10 + c - '0') % m;
+	while (b) {
+		if (b & 1)
+			ret = (ret + a) % MOD;
+		b = b / 2;
+		a = (a + a) % MOD;
 	}
 	return ret;
 }
@@ -26,25 +29,31 @@ LL bigmod(const string& s, LL m) {
 LL powmod(LL a, LL b) {
 	LL ret = 1LL;
 	while (b) {
-		if (b & 1) ret = (ret * a) % MOD;
+		if (b & 1)
+			ret = mulmod(ret, a);
 		b = b / 2;
-		a = (a * a) % MOD;
+		a = mulmod(a, a);
 	}
 	return ret;
 }
- 
+
 int main() {
-	fastio;
-	string k, n;
 	int t;
-	cin >> t;
+	scanf("%d", &t);
 	while (t--) {
-		cin >> n >> k;
-		int odd = (n.back() - '0') & 1 ? -1 : 1;
-		LL y = bigmod(n, MOD - 1);
-		LL x = bigmod(k, MOD);
-		x = (x - 1 + MOD) % MOD;
-		cout << (powmod(x, y) + odd * x + MOD) % MOD << endl;
+		LL n;
+		scanf("%lld", &n);
+		if (n == 1)
+			puts("1");
+		else {
+			//formula: 3 * 10^(n - 1) - (8 * 3^ (2 * n - 3))) = 3 * 10 ^ (n - 1) - (14n - 24)
+			LL a = (3 * powmod(10, n - 1)) % MOD;
+			LL b = ( 8 * powmod(3, 2 * n - 3)) % MOD;
+			LL ans = (a - b + MOD) % MOD;
+			if (ans < 0)
+				ans += MOD;
+			printf("%lld\n", ans);
+		}
 	}
 	return 0;
 }

@@ -9,44 +9,34 @@ typedef pair<int, pair<int, int> > piii;
 #define PI acos(-1)
 #define all(c) c.begin(), c.end()
 #define SET(x, y) memset((x), y, sizeof(x))
-const int MOD = 100;
+const int MOD = 1e9 + 7;
 const int INF = 1e9;
 const LL INF64 = 1e18;
 
 const int N = 1e5 + 5;
 
-int cek(LL num) {
-	LL ret = 1LL;
-	for (int i = 2; i <= num; i++) {
-		bool b = false;
-		for (int j = 2; j < i; j++ ) {
-			if (i % j == 0) {
-				b = 1;
-				break;
-			}
-		}
-		if (!b) {
-			int temp = 1;
-			while (num % i == 0) {
-				num /= i;
-				temp++;
-			}
-			ret *= temp;
-		}
-	}
-	return ret & 1;
-}
+LL arr[10005];
+LL prefix[10005];
 
 int main() {
 	LL n;
 	scanf("%lld", &n);
-	int ans = 0;
-	for (LL i = 1; i<= n; i++) {
-		if (cek(i)) {
-			ans += i % MOD; ans %= MOD;
-		}
+	for (int i = 1; i <= n; i++)
+		scanf("%lld", arr + i);
+	sort(arr + 1, arr + n + 1);
+	prefix[0] = 0;
+	for (int i = 1; i <= n; i++) {
+		prefix[i] = prefix[i - 1] + arr[i];
 	}
-	printf("%d\n", ans);
+	LL q;
+	scanf("%lld", &q);
+	while (q--) {
+		LL x;
+		scanf("%lld", &x);
+		LL ub = upper_bound(arr + 1, arr + n + 1, x) - arr;
+		ub--;
+		printf("%lld %lld\n", ub, prefix[ub]);
+	}
 	return 0;
 }
 		
