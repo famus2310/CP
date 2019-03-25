@@ -13,18 +13,26 @@ const LL INF64 = 1e18;
 const int NMAX = 1e5 + 5;
 
 double dist(double x1, double x2, double y1, double y2) {
-	return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	return pow((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1), 0.5);
 }
 
 int main() {
 	double a1, b1, r1, a2, b2, r2;
 	cin >> a1 >> b1 >> r1 >> a2 >> b2 >> r2;
 	double d = dist(a1, b1, a2, b2);
-	if (d == abs(r1 - r2)) {
-		if (d == 0) cout << -1 << endl;
-		else cout << 1 << endl;
-	} else if (abs(r1 - r2) < d && d < abs(r1 + r2)) {
-		cout << 2 << endl;
-	} else cout << 0 << endl;
+	if (r2 > r1)
+		swap(r2, r1);
+	if (a1 == a2 && b1 == b2) {
+		if (r1 == r2)
+			cout << "-1";
+		else cout << "0";
+	} 
+	else 
+		if (d == r1 + r2 || d == r1 - r2)
+			cout << "1";
+		else 
+			if (d > r1 + r2 || d < r1 - r2)
+				cout << "0";
+			else cout << "2";
 	return 0;
 }

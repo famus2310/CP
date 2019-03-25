@@ -16,12 +16,10 @@ const LL INF64 = 1e18;
 const int N = 1e5 + 5;
 
 int main() {
-	freopen("test.txt", "w", stdout);
-	printf("%d\n", N);
-	for (int i = 0; i < N; i++) {
-		printf("%d%c", 1, i == N - 1 ? '\n' : ' ');
-	}
-
-	return 0;
+	cout << 55 << " " << 35 << " " << 15 << endl;
+	for (int i = 0; i < 55; i++)
+		cout << 1 << " ";
+	cout << endl;
+ 	return 0;
 }
 		

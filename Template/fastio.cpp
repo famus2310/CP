@@ -39,16 +39,16 @@ int readInt () {
 	bool minus = false;
 	int result = 0;
 	char ch;
-	ch = getchar();
+	ch = _getchar_nolock();
 	while (true) {
 		if (ch == '-') break;
 		if (ch >= '0' && ch <= '9') break;
-		ch = getchar();
+		ch = _getchar_nolock();
 	}
 	if (ch == '-') minus = true;
 	else result = ch-'0';
 	while (true) {
-		ch = getchar();
+		ch = _getchar_nolock();
 		if (ch < '0' || ch > '9') break;
 		result = result*10 + (ch - '0');
 	}
