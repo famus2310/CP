@@ -43,14 +43,14 @@ int f(int m, int k, int l) {
 	if (k == m)
 		return 0;
 	if (l == 1)
-		return 1;
+		return 1;	
 	if (l == C[m][k])
-		return C[m - 1][k];
-		// return 0;
+		// return C[m - 1][k];
+		return 0;
 	if (1 <= l && l <= C[m - 1][k - 1])
 		return f(m - 1, k - 1, l);
-	// return f(m - 1, k, l - C[m - 1][k - 1]);
-	return C[m - 2][k - 1] + F(m - 1, k, l - C[m - 1][k - 1]);
+	return f(m - 1, k, l - C[m - 1][k - 1]);
+	// return C[m - 2][k - 1] + F(m - 1, k, l - C[m - 1][k - 1]);
 }
 
 int main() {

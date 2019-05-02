@@ -18,23 +18,23 @@ const int N = 1e5 + 5;
 LL dp[N][2]; //0 = white, 1 black
 bool vis[N];
 vector<int> adjList[N];
-LL ans = 0LL;
 
-void dfs(int now) {
+pair<LL, LL> dfs(int now) {
 	vis[now] = 1;
 	LL cnt = 0LL;
+	LL w = 1, b = 1;
 	for (auto it : adjList[now]) {
 		if (!vis[it]) {
 			cnt++;
-			dp[it][0] = (dp[it][0] + (dp[now][1] + dp[now][0])) % MOD;
-			dp[it][1] = (dp[it][1] + dp[now][0]) % MOD;
-			dfs(it);
+			auto cur = dfs(it);
+			w = (w * (cur.first + cur.second) % MOD) % MOD;
+			b = (b * (cur.first) % MOD) % MOD;
 		}
 	}
 	if (cnt == 0) {
-		cout << dp[now][1] << " " << dp[now][0] << endl;
-		ans = (ans + (dp[now][1] + dp[now][0]) % MOD) % MOD;
+		return {1, 1};
 	}
+	return {w, b};
 }
 
 int main() {
@@ -47,10 +47,8 @@ int main() {
 		adjList[a].pb(b);
 		adjList[b].pb(a);
 	}
-	dp[1][0] = 1;
-	dp[1][1] = 1;
-	dfs(1);
-	printf("%lld\n", ans % MOD);
+	auto ans = dfs(1);
+	printf("%lld\n", (ans.first + ans.second) % MOD);
 	return 0;
 }
 		

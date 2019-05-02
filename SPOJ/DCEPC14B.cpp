@@ -31,13 +31,18 @@ int main() {
 	scanf("%lld", &t);
 	while (t--) {
 		LL ans = 0LL;
+		bool two = 0;
+		bool zero = 0;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				LL a;
 				scanf("%lld", &a);
 				ans = ans + mp[a];
+				two |= (a == 2);
 			}
 		}
+		if (!two)
+			ans -= 4;
 		printf("%lld\n", ans);
 	}
 	return 0;

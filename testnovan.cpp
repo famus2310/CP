@@ -1,113 +1,92 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-set<vvi> visit;
-vvi final;
-bool found = 0;
-string st;
-int N,
- dx[4] {0, 1, 0, -1},
- dy[4] {-1, 0, 1, 0};
-
-void printState(vvi state)
-{
- for (int i=0;i<N;i++) {
-  for (int j=0;j<N;j++) {
-   cout<<state[i][j]<<' ';
-  }
-  cout<<endl;
- }
-}
-
-void DFS(vvi currState, int x, int y, int depth, string step)
-{
- visit.insert(currState);
- if (currState == final) {
-  cout<<"Banyak langkah (belum tentu minimal): "<<depth<<endl;
-  found = 1;
-  st = step;
-  return;
- }
- for (int i=0;i<4;i++) {
-  if (x+dx[i] >= 0 && x+dx[i] < N && y+dy[i] >= 0 && y+dy[i] < N) {
-   vvi temp = currState;
-   string tmp = step;
-   switch (i) {
-    case 0 :
-    tmp+="U";
-    break;
-    case 1 :
-    tmp+="R";
-    break;
-    case 2 :
-    tmp+="D";
-    break;
-    case 3 :
-    tmp+="L";
-    break;
-    default :
-    break;
-   }
-   swap(temp[y][x], temp[y+dy[i]][x+dx[i]]);
-   if (visit.find(temp) == visit.end() && !found)
-    DFS(temp, x+dx[i], y+dy[i], depth+1, tmp);
-  }
- }
- return;
-}
-
-int main()
-{
- cin>>N;
- vvi init;
- int x,y;
- for (int i=0;i<N;i++) {
-  init.push_back(vi());
-  final.push_back(vi());
-  for (int j=0;j<N;j++) {
-   if (i == N-1 && j == N-1) final[i].push_back(0);
-   else final[i].push_back(N*i+j+1);
-   int temp;
-   cin>>temp;
-   init[i].push_back(temp);
-   if (init[i][j] == 0) {
-    x=j;y=i;
-   }
-  }
- }
- cout<<endl;
- DFS(init, x, y, 0, "");
- if (found) {
-  cout<<"Solusi:\n";
-  for (auto c:st) {
-   switch (c) {
-    case 'R':
-    cout<<"Kanan\n";
-    swap(init[y][x], init[y][x+1]);
-    x++;
-    break;
-    case 'D':
-    cout<<"Bawah\n";
-    swap(init[y][x], init[y+1][x]);
-    y++;
-    break;
-    case 'L':
-    cout<<"Kiri\n";
-    swap(init[y][x], init[y][x-1]);
-    x--;
-    break;
-    case 'U':
-    cout<<"Atas\n";
-    swap(init[y][x], init[y-1][x]);
-    y--;
-    break;
-    default:
-    break;
-   }
-   printState(init);
-   cout<<endl;
-  }
- }
- else cout<<"Solusi tidak ditemukan";
-}
+#include<bits/stdc++.h>
+     
+    int tab[710];
+    int dp[710][710];
+    int n;
+     
+    int gcd(int a,int b)
+    {
+      return (b == 0 ? a : gcd(b,a % b));
+    }
+     
+    int rec(int l,int r,int root)
+    {
+      // printf("%d %d %d %d\n",l,r,tab[root],root);
+      if (l == r) return 1;
+      if (dp[l][r] != -1)
+      {
+        // puts("yo");
+        return dp[l][r];
+      }
+      int i;
+      int satu = (root == l),dua = (root == r);
+      for (i = l ; i <= root - 1; i++) if (gcd(tab[i],tab[root]) != 1 && tab[i] < tab[root])
+      {
+        // printf("%d\n",i);
+        satu |= rec(l,root - 1,i);
+        // if (satu) break;
+      }
+      for (i = root + 1 ; i <= r ; i++) if (gcd(tab[i],tab[root]) != 1 && tab[i] > tab[root])
+      {
+        // printf("%d %d %d\n",tab[i],tab[root],gcd(tab[i],tab[root]));
+        // printf("%d\n",i);
+        dua |= rec(root + 1,r,i);
+        // if (dua) break;
+      }
+      int ans = satu & dua;
+      // printf("%d %d %d %d %d\n",l,r,tab[root],satu,dua);
+      return dp[l][r] = ans;
+    }
+     
+    // int cmpfunc(const void * a,const void * b)
+    // {
+    //  return ( *(int*)a - *(int*)b );
+    // }
+     
+    int main() {
+      memset(dp,-1,sizeof(dp));
+      // printf("%d\n",gcd(7,17));
+      scanf("%d",&n);
+      int i;
+      for (i = 1 ; i <= n ; i++)
+      {
+        scanf("%d",tab + i);
+        if (tab[i] == tab[i - 1])
+        {
+          assert(false);
+        }
+      }
+      // qsort(tab,n + 1,sizeof(int),cmpfunc);
+      int ans = 0;
+      for (i = 1 ; i <= n ; i++)
+      {
+        ans |= rec(1,n,i);
+        // if (ans == 1)
+        // {
+        //  // printf("%d\n",i);
+        //  break;
+        // }
+      }
+      memset(dp,-1,sizeof(dp));
+      for (i = n ; i <= n ; i++)
+      {
+        ans |= rec(1,n,i);
+        // if (ans == 1)
+        // {
+        //  // printf("%d\n",i);
+        //  break;
+        // }
+      }
+      // for (i = 1 ; i <= n ; i++) if (dp[1][n])
+      // {
+      //  printf("%d\n",i);
+      // }
+      // for (i = 1 ; i < n ; i++) if (dp[1][4][i])
+      // {
+      //  printf("%d\n",i);
+      // }
+      if (ans)
+        puts("Yes");
+      else
+        puts("No");
+    }

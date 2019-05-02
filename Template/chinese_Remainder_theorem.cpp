@@ -31,8 +31,8 @@ int chinese_remainder(int *n, int *a, int len)
  
 int main(void)
 {
-	int n[] = { 3, 5, 7 };
-	int a[] = { 2, 3, 2 };
+	int n[] = {15};
+	int a[] = {5};
  
 	printf("%d\n", chinese_remainder(n, a, sizeof(n)/sizeof(n[0])));
 	return 0;
