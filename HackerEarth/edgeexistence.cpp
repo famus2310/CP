@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+typedef pair<int, int> pii;
+typedef pair<int, pair<int, int> > piii;
+#define pb push_back
+#define debug(x) cout << x << endl
+#define fastio ios_base::sync_with_stdio(0), cin.tie(0)
+#define PI acos(-1)
+#define all(c) c.begin(), c.end()
+#define SET(x, y) memset((x), y, sizeof(x))
+const int MOD = 1e9 + 7;
+const int INF = 1e9 + 5;
+const LL INF64 = 1e18;
+
+const int N = 1e5 + 5;
+
+LL n, m;
+vector<LL> adjList[1005];
+bool vis[1005];
+
+bool dfs(int now, int target) {
+	if (target == now)
+		return true;
+	bool ret = 0;
+	for (auto it : adjList[now]) {
+		if (!vis[it]) {
+			vis[it] = 1;
+			ret = ret | dfs(it, target);
+		}
+	}
+	return ret;
+}
+
+int main() {
+	fastio;
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		LL a, b;
+		cin >> a >> b;
+		adjList[a].pb(b);
+		adjList[b].pb(a);
+	}
+	LL q;
+	cin >> q;
+	while (q--) {
+		LL a, b;
+		cin >> a >> b;
+		if (dfs(a, b)) {
+			cout << "YES" << endl;
+		} else cout << "NO" << endl;
+	}
+	return 0;
+}
+		
